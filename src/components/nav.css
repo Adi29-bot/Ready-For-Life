@@ -1,0 +1,246 @@
+.navigation {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  background: linear-gradient(135deg, #3f6cff, #d5f4ff);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 18px;
+  padding: 0 20px;
+  margin-top: 29px;
+}
+
+.navigation ul {
+  display: flex;
+  width: auto;
+  padding: 0;
+  margin: 0;
+}
+
+.navigation ul li {
+  position: relative;
+  list-style: none;
+  width: 70px;
+  height: 70px;
+  z-index: 1;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  line-height: 75px;
+  font-size: 1.5em;
+  text-align: center;
+  transition: 0.5s;
+  color: #000000;
+}
+
+.navigation ul li.active a .icon {
+  transform: translateY(-35px);
+}
+
+.navigation ul li a .text {
+  position: absolute;
+  color: var(--clr);
+  font-weight: 400;
+  font-size: 0.75em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.navigation ul li.active a .text {
+  opacity: 1;
+  transform: translateY(15px);
+}
+
+.indicator {
+  position: absolute;
+  top: -50%;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+  border-radius: 50%;
+  border: 6px solid var(--clr);
+  transition: 0.5s;
+}
+
+.indicator::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -22px;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border-top-right-radius: 20px;
+  box-shadow: 1px -10px 0 0 #ffffff;
+}
+
+.indicator::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -22px;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border-top-left-radius: 20px;
+  box-shadow: -1px -10px 0 0 #ffffff;
+}
+
+.navigation ul li:nth-child(1).active ~ .indicator {
+  transform: translateX(calc(70px * 0));
+}
+.navigation ul li:nth-child(2).active ~ .indicator {
+  transform: translateX(calc(70px * 1));
+}
+.navigation ul li:nth-child(3).active ~ .indicator {
+  transform: translateX(calc(70px * 2));
+}
+.navigation ul li:nth-child(4).active ~ .indicator {
+  transform: translateX(calc(70px * 3));
+}
+.navigation ul li:nth-child(5).active ~ .indicator {
+  transform: translateX(calc(70px * 4));
+}
+.navigation ul li:nth-child(6).active ~ .indicator {
+  transform: translateX(calc(70px * 5));
+}
+.navigation ul li:nth-child(7).active ~ .indicator {
+  transform: translateX(calc(70px * 6));
+}
+
+.logo-container {
+  position: absolute;
+  right: 20px;
+}
+
+.logo {
+  max-height: 50px;
+}
+
+:root {
+  --clr: #ffffff;
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 5;
+}
+
+.overlay.active {
+  display: block;
+}
+
+@media (max-width: 699px) {
+  .hamburger {
+    display: block;
+  }
+  .navigation {
+    margin-top: 1px;
+  }
+
+  .nav-items {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: linear-gradient(135deg, #3f6cff, #d5f4ff);
+    flex-direction: column;
+    padding: 10px 0;
+    transition: left 0.4s ease;
+    z-index: 10;
+  }
+
+  .nav-items.open {
+    left: 0;
+  }
+
+  .close-icon {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 15;
+  }
+  .nav-items li {
+    width: 100%;
+    height: auto;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-items li.active {
+    opacity: 1;
+  }
+
+  .navigation ul li.active a .icon {
+    transform: translateY(-16px);
+  }
+
+  .nav-items li.show {
+    opacity: 1;
+  }
+
+  .indicator {
+    display: none;
+  }
+}
+
+@media print {
+  .navigation {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 30px;
+  }
+
+  .navigation ul {
+    display: none;
+  }
+
+  .logo-container {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .logo {
+    max-height: 50px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hamburger,
+  .overlay,
+  .close-icon {
+    display: none;
+  }
+}

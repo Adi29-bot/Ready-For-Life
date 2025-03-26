@@ -1,0 +1,26 @@
+@media print {
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .col-md-6,
+  .col-md-4 {
+    flex: 1 1 100%;
+    margin-bottom: 10px;
+  }
+
+  .row.name-date,
+  .row.front-back,
+  .row.staff,
+  .row.parent {
+    flex-direction: row;
+  }
+
+  .row.name-date .col-md-6,
+  .row.front-back .col-md-6,
+  .row.staff .col-md-4,
+  .row.parent .col-md-4 {
+    flex: 1;
+  }
+}

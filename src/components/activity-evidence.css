@@ -1,0 +1,46 @@
+@media print {
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .col-md-6 {
+    flex: 1 1 50%;
+    margin-bottom: 10px;
+  }
+
+  .col-md-4 {
+    flex: 1 1 33.33%;
+  }
+
+  .row.name-activity,
+  .row.date-time,
+  .row.staff-signature {
+    flex-direction: row;
+  }
+
+  .row.name-activity .col-md-6,
+  .row.date-time .col-md-6,
+  .row.staff-signature .col-md-6 {
+    flex: 1;
+  }
+
+  .photo-explanation {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .photo-explanation .photo {
+    flex: 1;
+    margin-right: 10px;
+  }
+
+  .photo-explanation .explanation {
+    flex: 1;
+  }
+
+  input[type="file"] {
+    display: none !important;
+  }
+}
