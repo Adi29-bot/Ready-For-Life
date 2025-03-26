@@ -16,13 +16,13 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path='/Ready-For-Life' element={<DailyLogForm />} />
-        <Route path='/Ready-For-Life/abc-chart' element={<ABC />} />
-        <Route path='/Ready-For-Life/incident-form' element={<IncidentReportForm />} />
-        <Route path='/Ready-For-Life/body-maps' element={<BodyMap />} />
-        <Route path='/Ready-For-Life/brs' element={<BRS />} />
-        <Route path='/Ready-For-Life/mar' element={<MAR />} />
-        <Route path='/Ready-For-Life/activity-evidence' element={<ActivityEvidence />} />
+        <Route path='/' element={<DailyLogForm />} />
+        <Route path='/abc-chart' element={<ABC />} />
+        <Route path='/incident-form' element={<IncidentReportForm />} />
+        <Route path='/body-maps' element={<BodyMap />} />
+        <Route path='/brs' element={<BRS />} />
+        <Route path='/mar' element={<MAR />} />
+        <Route path='/activity-evidence' element={<ActivityEvidence />} />
       </Routes>
     </Router>
   );

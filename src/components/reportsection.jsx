@@ -52,7 +52,7 @@ const ReportSection = ({ showSections, handleToggle, register, errors }) => {
               {errors.reports?.[report] && <small className='text-danger'>{errors.reports[report].message}</small>}
 
               {selectedReports[report] && (
-                <a href={`/Ready-For-Life/${report.toLowerCase().replace(/ /g, "-")}`} className='text-primary ms-3 reports-hide'>
+                <a href={`/${report.toLowerCase().replace(/ /g, "-")}`} className='text-primary ms-3 reports-hide'>
                   Go to {report}
                 </a>
               )}

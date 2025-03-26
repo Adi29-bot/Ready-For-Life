@@ -9,13 +9,13 @@ const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navItems = [
-    { text: "Daily Log", to: "/Ready-For-Life", icon: "📝" },
-    { text: "ABC Chart", to: "/Ready-For-Life/abc-chart", icon: <MdAbc style={{ color: "#2600ff" }} /> },
-    { text: "Incident", to: "/Ready-For-Life/incident-form", icon: "🚨" },
-    { text: "Body Maps", to: "/Ready-For-Life/body-maps", icon: <MdAccessibilityNew /> },
-    { text: "BRS", to: "/Ready-For-Life/brs", icon: "📋" },
-    { text: "MAR", to: "/Ready-For-Life/mar", icon: "💊" },
-    { text: "Activity Evidence", to: "/Ready-For-Life/activity-evidence", icon: "📷" },
+    { text: "Daily Log", to: "/", icon: "📝" },
+    { text: "ABC Chart", to: "/abc-chart", icon: <MdAbc style={{ color: "#2600ff" }} /> },
+    { text: "Incident", to: "/incident-form", icon: "🚨" },
+    { text: "Body Maps", to: "/body-maps", icon: <MdAccessibilityNew /> },
+    { text: "BRS", to: "/brs", icon: "📋" },
+    { text: "MAR", to: "/mar", icon: "💊" },
+    { text: "Activity Evidence", to: "/activity-evidence", icon: "📷" },
   ];
 
   const activeIndex = navItems.findIndex((item) => item.to === location.pathname);
@@ -40,7 +40,7 @@ const Navbar = () => {
   return (
     <div className='navigation'>
       <div className='logo-container'>
-        <Link to='/Ready-For-Life'>
+        <Link to='/'>
           <img src={logo} alt='Logo' className='logo' />
         </Link>
       </div>
