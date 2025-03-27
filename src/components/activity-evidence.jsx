@@ -217,19 +217,7 @@ const ActivityEvidence = () => {
                 Take Photo
               </button>
             )}
-            <input
-              type='file'
-              className='form-control d-inline-block w-auto'
-              accept='image/*'
-              {...register("photo", {
-                required: "Photo is required",
-                validate: (value) => {
-                  const file = value && value.length > 0 ? value[0] : null;
-                  return file && file.type.startsWith("image/") ? true : "Only image files are allowed";
-                },
-              })}
-              onChange={uploadPhoto}
-            />
+            <input type='file' className='form-control d-inline-block w-auto' accept='image/*' {...register("photo")} onChange={uploadPhoto} />
           </div>
           {errors.photo && <small className='text-danger'>{errors.photo.message}</small>}
         </div>

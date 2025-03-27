@@ -240,7 +240,7 @@ function ABC() {
             {abcSections.map((index) => (
               <tr className='page-break' key={index}>
                 <td>
-                  {watch(`date[${index}]`)}, {formatTime(watch(`from[${index}]`))} to {formatTime(watch(`to[${index}]`))}
+                  {watch(`date${index}`)}, {formatTime(watch(`from[${index}]`))} to {formatTime(watch(`to[${index}]`))}
                 </td>
                 <td>{watch(`activity${index}`)}</td>
                 <td>{watch(`antecedent${index}`)}</td>
