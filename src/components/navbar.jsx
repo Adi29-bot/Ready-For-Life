@@ -9,14 +9,18 @@ const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navItems = [
-    { text: "Daily Log", to: "/", icon: "📝" },
-    { text: "ABC Chart", to: "/abc-chart", icon: <MdAbc style={{ color: "#2600ff" }} /> },
-    { text: "Incident", to: "/incident-form", icon: "🚨" },
-    { text: "Body Maps", to: "/body-maps", icon: <MdAccessibilityNew /> },
-    { text: "BRS", to: "/brs", icon: "📋" },
-    { text: "MAR", to: "/mar", icon: "💊" },
-    { text: "Activity Evidence", to: "/activity-evidence", icon: "📷" },
+    { text: "Daily Log", to: "/", icon: "📝", title: "Daily Log Form" },
+    { text: "ABC Chart", to: "/abc-chart", icon: <MdAbc style={{ color: "#2600ff" }} />, title: "ABC Chart Form" },
+    { text: "Incident", to: "/incident-form", icon: "🚨", title: "Incident Report Form" },
+    { text: "Body Maps", to: "/body-maps", icon: <MdAccessibilityNew />, title: "Body Map Form" },
+    { text: "BRS", to: "/brs", icon: "📋", title: "Behavioral Recording Sheet" },
+    { text: "MAR", to: "/mar", icon: "💊", title: "Medication Administration Record Form" },
+    { text: "Activity Evidence", to: "/activity-evidence", icon: "📷", title: "Activity Evidence Form" },
   ];
+  useEffect(() => {
+    const currentItem = navItems.find((item) => item.to === location.pathname);
+    document.title = currentItem?.title || "Daily Log Form";
+  }, [location.pathname]);
 
   const activeIndex = navItems.findIndex((item) => item.to === location.pathname);
 

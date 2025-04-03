@@ -76,6 +76,22 @@ td {
   }
 }
 
+@media (hover: none) {
+  .btn-outline-primary:hover,
+  .btn-outline-primary:active,
+  .btn-primary:hover,
+  .btn-primary:active {
+    background-color: transparent !important;
+    border-color: #0d6efd !important;
+    color: #0d6efd !important;
+  }
+
+  .btn.selected {
+    background-color: #0d6efd !important;
+    color: white !important;
+  }
+}
+
 @media print {
   * {
     font-family: "Arial", "sans-serif", "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji";

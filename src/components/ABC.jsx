@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { baseStaffOptions, clientOptions, useCoStaffFields, handleFieldChange, renderCoFields } from "./formHelpers";
 import Creatable from "react-select/creatable";
@@ -26,8 +26,15 @@ function ABC() {
       date: [currentDate],
     },
   });
-  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "abcForm");
-  const [abcSections, setAbcSections] = useState([0]);
+  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "ABC_Form");
+  const [abcSections, setAbcSections] = useState(() => {
+    const storedSections = localStorage.getItem("abcSections");
+    return storedSections ? JSON.parse(storedSections) : [0];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("abcSections", JSON.stringify(abcSections));
+  }, [abcSections]);
 
   const formatTime = (time) => {
     if (!time) return "";
@@ -61,7 +68,7 @@ function ABC() {
         {/* Name Selection */}
         <div className='mb-3'>
           <h6 className='form-label mb-0 fw-bold text-primary'>
-            <strong>Name</strong>
+            <strong>Client</strong>
           </h6>
           <Controller
             name='name'

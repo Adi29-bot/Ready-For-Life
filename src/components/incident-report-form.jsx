@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { baseStaffOptions, clientOptions, useCoStaffFields, handleFieldChange, renderCoFields } from "./formHelpers";
 import Creatable from "react-select/creatable";
@@ -25,11 +25,36 @@ const IncidentReportForm = () => {
   const { coStaffFields: personCompletingFields, setCoStaffFields: setPersonCompletingFields } = useCoStaffFields();
   const { coStaffFields: witnessFields, setCoStaffFields: setWitnessFields } = useCoStaffFields();
 
-  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "incidentReportForm");
+  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "Incident_Form");
   const firstAidRequired = watch("firstAidRequired");
   const physicalInterventionUsed = watch("physicalInterventionUsed");
   const furtherActionRequired = watch("furtherActionRequired");
   const { manager, supportStaff, parents, other } = watch("recommendationsShared") || {};
+
+  useEffect(() => {
+    const watchedFields = {
+      firstAidRequired,
+      physicalInterventionUsed,
+      furtherActionRequired,
+      recommendationsShared: { manager, supportStaff, parents, other },
+    };
+    localStorage.setItem("incidentReportFormData", JSON.stringify(watchedFields));
+  }, [firstAidRequired, physicalInterventionUsed, furtherActionRequired, manager, supportStaff, parents, other]);
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("incidentReportFormData");
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        Object.keys(parsedData).forEach((key) => {
+          setValue(key, parsedData[key]);
+        });
+      } catch (error) {
+        console.error("Error parsing saved data:", error);
+        localStorage.removeItem("incidentReportFormData");
+      }
+    }
+  }, [setValue]);
 
   return (
     <form className='container-fluid mb-3' id='myForm'>

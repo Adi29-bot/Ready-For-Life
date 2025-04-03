@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Creatable from "react-select/creatable";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -53,10 +53,19 @@ const DailyLogForm = () => {
     incident: false,
   });
 
-  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "DailyLog");
+  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "Daily_Log_Form");
+
+  useEffect(() => {
+    const savedSections = localStorage.getItem("showSections");
+    if (savedSections) {
+      setShowSections(JSON.parse(savedSections));
+    }
+  }, []);
 
   const handleToggle = (section, show) => {
-    setShowSections((prev) => ({ ...prev, [section]: show }));
+    const newShowSections = { ...showSections, [section]: show };
+    setShowSections(newShowSections);
+    localStorage.setItem("showSections", JSON.stringify(newShowSections));
   };
 
   const renderCheckboxes = (options, name, icons = []) => {
@@ -106,7 +115,7 @@ const DailyLogForm = () => {
   };
 
   return (
-    <form className='container-fluid mb-3' id='myForm'>
+    <form onSubmit={handleSubmit(handlePrint)} className='container-fluid mb-3' id='myForm'>
       <div className='row align-items-center'>
         <div className='mt-3 text-center'>
           <h2 style={{ marginBottom: "5px" }}>Daily Log Form</h2>

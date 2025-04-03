@@ -45,7 +45,6 @@ const SpeechToText = ({ onTextChange, isTextCleared }) => {
   const startListening = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      console.log("Previous recognition stopped.");
     }
 
     isManuallyStopped.current = false;
@@ -56,9 +55,7 @@ const SpeechToText = ({ onTextChange, isTextCleared }) => {
     recognition.interimResults = false;
     recognition.lang = "en-GB";
 
-    recognition.onstart = () => {
-      console.log("Speech recognition started.");
-    };
+    recognition.onstart = () => {};
 
     recognition.onresult = (event) => {
       // let interimTranscripts = "";
@@ -75,7 +72,6 @@ const SpeechToText = ({ onTextChange, isTextCleared }) => {
 
       if (finalTranscripts) {
         // lastTranscript.current += finalTranscripts.trim();
-        console.log("Final result:", finalTranscripts.trim());
         onTextChange(finalTranscripts.trim());
         lastTranscript.current = "";
         if (!isMobileOrTablet) {
@@ -90,31 +86,24 @@ const SpeechToText = ({ onTextChange, isTextCleared }) => {
     recognition.onerror = (event) => {
       console.error("Speech recognition error:", event.error);
       setIsListening(false);
-      console.log("Speech recognition error event:", event);
       alert("An error occurred during speech recognition. Please try again.");
     };
 
     recognition.onend = () => {
-      console.log("Speech recognition ended.");
       if (!isManuallyStopped.current) {
-        console.log("Recognition restarting automatically.");
         recognition.start();
-      } else {
-        console.log("Recognition ended manually.");
       }
     };
 
     recognitionRef.current = recognition;
     recognition.start();
     setIsListening(true);
-    console.log("Speech recognition initialized and started.");
   };
 
   const stopListening = () => {
     isManuallyStopped.current = true;
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      console.log("Speech recognition manually stopped.");
     }
     setIsListening(false);
   };

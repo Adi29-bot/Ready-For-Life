@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Controller } from "react-hook-form";
 import Creatable from "react-select/creatable";
 
@@ -63,9 +63,48 @@ export const clientOptions = [
   { label: "Ellie Chambers", value: "Ellie Chambers" },
 ].sort((a, b) => a.label.localeCompare(b.label));
 
+const LOCAL_STORAGE_KEYS = {
+  CO_STAFF_FIELDS: "coStaffFields",
+  CO_COLLECTOR_FIELDS: "coCollectorFields",
+  CO_DROPPED_OFF_FIELDS: "coDroppedOffFields",
+};
+
+export const saveToLocalStorage = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+export const loadFromLocalStorage = (key) => {
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : [];
+};
+
 export const useCoStaffFields = (initialFields = []) => {
-  const [coStaffFields, setCoStaffFields] = useState(initialFields);
+  const [coStaffFields, setCoStaffFields] = useState(() => loadFromLocalStorage(LOCAL_STORAGE_KEYS.CO_STAFF_FIELDS) || initialFields);
+  useEffect(() => {
+    saveToLocalStorage(LOCAL_STORAGE_KEYS.CO_STAFF_FIELDS, coStaffFields);
+  }, [coStaffFields]);
+
   return { coStaffFields, setCoStaffFields };
+};
+
+export const useCoCollectorFields = (initialFields = []) => {
+  const [coCollectorFields, setCoCollectorFields] = useState(() => loadFromLocalStorage(LOCAL_STORAGE_KEYS.CO_COLLECTOR_FIELDS) || initialFields);
+
+  useEffect(() => {
+    saveToLocalStorage(LOCAL_STORAGE_KEYS.CO_COLLECTOR_FIELDS, coCollectorFields);
+  }, [coCollectorFields]);
+
+  return { coCollectorFields, setCoCollectorFields };
+};
+
+export const useCoDroppedOffFields = (initialFields = []) => {
+  const [coDroppedOffFields, setCoDroppedOffFields] = useState(() => loadFromLocalStorage(LOCAL_STORAGE_KEYS.CO_DROPPED_OFF_FIELDS) || initialFields);
+
+  useEffect(() => {
+    saveToLocalStorage(LOCAL_STORAGE_KEYS.CO_DROPPED_OFF_FIELDS, coDroppedOffFields);
+  }, [coDroppedOffFields]);
+
+  return { coDroppedOffFields, setCoDroppedOffFields };
 };
 
 export const handleAddField = (setCoStaffFields) => {

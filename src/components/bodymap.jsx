@@ -26,7 +26,7 @@ const BodyMap = () => {
     getValues,
   } = useForm();
 
-  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "bodyMap");
+  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "BodyMap_Form");
   const [bodyMarks, setBodyMarks] = useState({
     front: [],
     back: [],

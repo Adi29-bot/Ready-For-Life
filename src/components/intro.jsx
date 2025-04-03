@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Controller } from "react-hook-form";
-import { baseStaffOptions, clientOptions, useCoStaffFields, handleFieldChange, renderCoFields } from "./formHelpers";
+import { baseStaffOptions, clientOptions, useCoStaffFields, useCoCollectorFields, useCoDroppedOffFields, handleFieldChange, renderCoFields } from "./formHelpers";
 import Creatable from "react-select/creatable";
 
 const ServiceUser = ({ register, errors, renderSelect, control }) => {
   const { coStaffFields, setCoStaffFields } = useCoStaffFields();
-  const [coCollectorFields, setCoCollectorFields] = useState([]);
-  const [coDroppedOffFields, setCoDroppedOffFields] = useState([]);
+  const { coCollectorFields, setCoCollectorFields } = useCoCollectorFields();
+  const { coDroppedOffFields, setCoDroppedOffFields } = useCoDroppedOffFields();
   return (
     <div className='intro-section'>
       <div className='row'>

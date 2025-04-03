@@ -60,7 +60,7 @@ const ActivityEvidence = () => {
   const canvasRef = useRef(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
-  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "activityEvidence");
+  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "Activity_Evidence_Form");
 
   const checkIfMobileOrTablet = () => {
     const width = window.innerWidth;

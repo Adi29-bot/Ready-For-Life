@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { clientOptions } from "./formHelpers";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import Creatable from "react-select/creatable";
@@ -10,6 +10,12 @@ import { faSave, faFile, faPrint } from "@fortawesome/free-solid-svg-icons";
 
 const MAR = () => {
   const currentDate = new Date().toISOString().slice(0, 10);
+
+  const defaultMedications = (() => {
+    const storedMedications = localStorage.getItem("marMedications");
+    return storedMedications ? JSON.parse(storedMedications) : [{ date: currentDate, time: "", medication: "", dose: "", signature1: "", signature2: "" }];
+  })();
+
   const {
     control,
     handleSubmit,
@@ -21,15 +27,19 @@ const MAR = () => {
     getValues,
   } = useForm({
     defaultValues: {
-      medications: [{ date: currentDate, time: "", medication: "", dose: "", signature1: "", signature2: "" }],
+      medications: defaultMedications,
     },
   });
 
-  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "marForm");
+  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "MAR_Form");
   const { fields, append, remove } = useFieldArray({
     control,
     name: "medications",
   });
+
+  useEffect(() => {
+    localStorage.setItem("marMedications", JSON.stringify(watch("medications")));
+  }, [watch("medications")]);
 
   const formatTime = (time) => {
     if (!time) return "";
@@ -43,7 +53,7 @@ const MAR = () => {
     <div>
       <form className='container-fluid mb-3 no-display' id='myForm'>
         <div className='row align-items-center'>
-          <div className=' text-center'>
+          <div className='mt-3 text-center'>
             <h2 style={{ marginBottom: "5px" }}>Medication Administering Recording Form</h2>
           </div>
         </div>
@@ -166,6 +176,10 @@ const MAR = () => {
             </button>
           </div>
         ))}
+
+        <button type='button' className='btn btn-primary' onClick={() => append({})}>
+          Add Medication Entry
+        </button>
 
         <div className='mt-3 mb-3 d-flex justify-content-center'>
           <button type='button' className='btn btn-primary' onClick={handleSave}>

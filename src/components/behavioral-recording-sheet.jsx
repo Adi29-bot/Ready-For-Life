@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { clientOptions } from "./formHelpers";
+import Creatable from "react-select/creatable";
 import CustomTextarea from "./customtextarea";
 import ScrollButton from "./scrollbutton";
 import { useFormHandlers } from "./formhandlers";
@@ -17,11 +19,11 @@ const BehavioralRecordingSheet = () => {
     watch,
     getValues,
   } = useForm();
-  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "behavioralRecordingSheet");
+  const { handleSave, handleReset, handlePrint } = useFormHandlers(reset, handleSubmit, getValues, "BRS_Form");
   const [highlightedOther, sethighlightedOther] = useState(false);
   const [otherEnvironment, setOtherEnvironment] = useState("");
   const clientDoing = watch("clientDoing") || [];
-  const whatDidHeDo = watch("whatDidHeDo");
+  const whatDidHeDo = watch("whatDidHeDo") || [];
 
   const handleHighlightedOther = (value) => {
     if (value === "Other") {
@@ -35,18 +37,42 @@ const BehavioralRecordingSheet = () => {
     <form className='container-fluid mb-3' id='myForm'>
       <div className='row align-items-center'>
         <div className='mt-3 mb-1 text-center'>
-          <h3 className='fw-bold text-dark' style={{ marginBottom: "5px" }}>
-            Behavioural Recording Sheet for things that were difficult
-          </h3>
+          <h3 style={{ marginBottom: "5px" }}>Behavioural Recording Sheet for things that were difficult</h3>
         </div>
       </div>
-      {/* Section 1: Date and Time */}
-      <div className='mb-2'>
-        <label className='form-label mb-0 fw-bold text-primary' htmlFor='dateTime'>
-          Date and Time of Event
-        </label>
-        <input type='datetime-local' id='dateTime' className={`form-control border-primary ${errors.date ? "is-invalid" : ""}`} {...register("dateTime", { required: "Date and Time are required" })} />
-        {errors.dateTime && <small className='text-danger'>{errors.dateTime.message}</small>}
+      {/* Section 1: Name and Date/Time */}
+      <div className='row align-items-center mb-2'>
+        <div className='col-md-6'>
+          <h6 className='form-label mb-0 fw-bold text-primary'>
+            <strong>Name</strong>
+          </h6>
+          <Controller
+            name='clientBehaviour'
+            control={control}
+            rules={{ required: "Provide Client Name" }}
+            render={({ field }) => (
+              <div className='react-select-container'>
+                <Creatable
+                  {...field}
+                  isClearable
+                  isSearchable
+                  options={clientOptions}
+                  onCreateOption={(label) => {
+                    setValue("clientBehaviour", { value: label, label });
+                  }}
+                />
+              </div>
+            )}
+          />
+          {errors.clientBehaviour && <small className='text-danger'>{errors.clientBehaviour.message}</small>}
+        </div>
+        <div className='col-md-6'>
+          <label className='form-label mb-0 fw-bold text-primary' htmlFor='dateTime'>
+            Date and Time of Event
+          </label>
+          <input type='datetime-local' id='dateTime' className={`form-control border-primary ${errors.date ? "is-invalid" : ""}`} {...register("dateTime", { required: "Date and Time are required" })} />
+          {errors.dateTime && <small className='text-danger'>{errors.dateTime.message}</small>}
+        </div>
       </div>
 
       {/* Section 2: What happened IMMEDIATELY BEFORE the behaviour? */}
