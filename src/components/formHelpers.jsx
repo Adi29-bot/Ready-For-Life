@@ -38,7 +38,7 @@ export const clientOptions = [
   { label: "Adam Jackson", value: "Adam Jackson" },
   { label: "Luke Checketts", value: "Luke Checketts" },
   { label: "Matthew Lloyd", value: "Matthew Lloyd" },
-  { label: "Llyas Mohammed", value: "Llyas Mohammed" },
+  { label: "Ilyas Mohammed", value: "Llyas Mohammed" },
   { label: "Korban Neale", value: "Korban Neale" },
   { label: "Kashif Hussain", value: "Kashif Hussain" },
   { label: "Shamas Haider", value: "Shamas Haider" },

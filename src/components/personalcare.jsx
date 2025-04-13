@@ -1,64 +1,101 @@
 import React, { useState, useEffect } from "react";
 import { showerIcon, shaveIcon, dryerIcon, brushIcon, clothesIcon, hairCutIcon } from "./icons";
+
+const CARE_TYPES = [
+  { name: "Showering", icon: showerIcon },
+  { name: "Shaving", icon: shaveIcon },
+  { name: "Hair Drying", icon: dryerIcon },
+  { name: "Brushing Teeth", icon: brushIcon },
+  { name: "Clothes Changing", icon: clothesIcon },
+  { name: "Hair Cut", icon: hairCutIcon },
+];
+
 const PersonalCareSection = ({ register, errors, showSections, handleToggle, setError, clearErrors }) => {
-  const [timeFields, setTimeFields] = useState({
-    bowelMovement: [],
-    urination: [],
-    care: [],
+  const [state, setState] = useState(() => {
+    const savedState = JSON.parse(localStorage.getItem("personalCareState")) || {
+      timeFields: { bowel: [], urination: [], care: [] },
+      checkedCareTypes: CARE_TYPES.reduce((acc, { name }) => ({ ...acc, [name]: false }), {}),
+      personalCareYes: false,
+      bowelYes: false,
+      urinationYes: false,
+    };
+    return savedState;
   });
 
-  const [checkedCareTypes, setCheckedCareTypes] = useState({
-    Showering: false,
-    Shaving: false,
-    "Hair Drying": false,
-    "Brushing Teeth": false,
-    "Clothes Changing": false,
-    "Hair Cut": false,
-  });
+  useEffect(() => {
+    localStorage.setItem("personalCareState", JSON.stringify(state));
+  }, [state]);
 
   const addTimeField = (type) => {
-    setTimeFields((prev) => ({
+    setState((prev) => ({
       ...prev,
-      [type]: [...prev[type], ""],
+      timeFields: { ...prev.timeFields, [type]: [...prev.timeFields[type], ""] },
     }));
   };
 
   const removeTimeField = (type, index) => {
-    setTimeFields((prev) => ({
+    setState((prev) => ({
       ...prev,
-      [type]: prev[type].filter((_, i) => i !== index),
+      timeFields: { ...prev.timeFields, [type]: prev.timeFields[type].filter((_, i) => i !== index) },
     }));
   };
 
   const handleCheckboxChange = (type) => {
-    setCheckedCareTypes((prev) => {
-      const newChecked = { ...prev, [type]: !prev[type] };
-      if (newChecked[type] && !timeFields.care.includes(type)) {
+    setState((prev) => {
+      const newChecked = { ...prev.checkedCareTypes, [type]: !prev.checkedCareTypes[type] };
+      if (newChecked[type] && !prev.timeFields.care.includes(type)) {
         addTimeField("care");
       } else if (!newChecked[type]) {
-        removeTimeField("care", timeFields.care.indexOf(type));
+        removeTimeField("care", prev.timeFields.care.indexOf(type));
       }
-      return newChecked;
+      return { ...prev, checkedCareTypes: newChecked };
     });
   };
 
   const handleRadioChange = (type, value) => {
     handleToggle(type, value);
-    if (value === true) {
-      if (timeFields[type] && Array.isArray(timeFields[type]) && timeFields[type].length === 0) {
-        addTimeField(type);
-      }
+    if (value && state.timeFields[type].length === 0) {
+      addTimeField(type);
     }
   };
 
   useEffect(() => {
-    const isAnyChecked = Object.values(checkedCareTypes).some((isChecked) => isChecked);
+    const isAnyChecked = Object.values(state.checkedCareTypes).some(Boolean);
     if (!isAnyChecked) {
       setError("checkbox", { type: "manual", message: "At least one checkbox must be selected" });
     } else {
       clearErrors("checkbox");
     }
-  }, [checkedCareTypes, setError, clearErrors]);
+  }, [state.checkedCareTypes, setError, clearErrors]);
+
+  const renderCheckbox = (careType, index) => (
+    <div className='col' key={index}>
+      <div className='form-check'>
+        <input type='checkbox' className='form-check-input' id={careType.name} {...register(`careTypes.${careType.name}`, { required: true })} checked={state.checkedCareTypes[careType.name]} onChange={() => handleCheckboxChange(careType.name)} />
+        <label className='form-check-label' htmlFor={careType.name}>
+          {careType.name}
+          <img src={careType.icon} alt={careType.name} style={{ width: "20px", marginRight: "5px" }} />
+        </label>
+        {state.checkedCareTypes[careType.name] && (
+          <div className='d-flex align-items-end mt-1'>
+            <label className='me-1' htmlFor={`careTime-${index}`}>
+              Time:
+            </label>
+            <input
+              type='time'
+              className={`form-control w-auto ${errors.careTime ? "is-invalid" : ""}`}
+              id={`careTime-${index}`}
+              {...register(`careTime[${index}]`, {
+                required: "Time is required",
+                validate: (value) => value !== "" || "Time is required",
+              })}
+            />
+            {errors.careTime && <span className='invalid-feedback'>{errors.careTime.message}</span>}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <div className='mt-1 border border-primary p-3'>
@@ -86,47 +123,20 @@ const PersonalCareSection = ({ register, errors, showSections, handleToggle, set
             <strong>Type of Care</strong>
           </h6>
           <div className='row page-break'>
-            {["Showering", "Shaving", "Hair Drying", "Brushing Teeth", "Clothes Changing", "Hair Cut"].map((careType, index) => (
-              <div className='col' key={index}>
-                <div className='form-check'>
-                  <input type='checkbox' className='form-check-input' id={careType} checked={checkedCareTypes[careType] || false} onChange={() => handleCheckboxChange(careType)} />
-                  <label className='form-check-label' htmlFor={careType}>
-                    {careType}
-                    <img src={[showerIcon, shaveIcon, dryerIcon, brushIcon, clothesIcon, hairCutIcon][index]} alt={careType} style={{ width: "20px", marginRight: "5px" }} />
-                  </label>
-                  {checkedCareTypes[careType] && (
-                    <div className='d-flex align-items-end mt-1'>
-                      <label className='me-1' htmlFor={`careTime-${index}`}>
-                        Time:
-                      </label>
-                      <input
-                        type='time'
-                        className={`form-control w-auto ${errors.careTime ? "is-invalid" : ""}`}
-                        id={`careTime-${index}`}
-                        {...register(`careTime[${index}]`, {
-                          required: "Time is required",
-                          validate: (value) => value !== "" || "Time is required",
-                        })}
-                      />
-                      {errors.careTime && <span className='invalid-feedback'>{errors.careTime.message}</span>}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
+            {CARE_TYPES.map(renderCheckbox)}
             {errors.checkbox && <small className='text-danger'>At least one checkbox must be selected</small>}
           </div>
         </div>
       )}
 
       {/* Toilet Section */}
-      <div className='row row-cols-1 row-cols-md-2 page-break '>
-        {["bowelMovement", "urination"].map((type, index) => (
+      <div className='row row-cols-1 row-cols-md-2 page-break'>
+        {["bowel", "urination"].map((type, index) => (
           <div className='col' key={index}>
             <div className='mt-3 border border-primary p-2'>
               <div className='d-flex flex-column flex-sm-row align-items-start align-items-sm-center flex-wrap'>
                 <label className='form-label me-sm-3 mb-0' htmlFor={`${type}-yes`}>
-                  <strong>{type === "bowelMovement" ? "Opened Bowel Using Toilet" : "Urinated Using Toilet"}:</strong>
+                  <strong>{type === "bowel" ? "Opened Bowel Using Toilet" : "Urinated Using Toilet"}:</strong>
                 </label>
                 <div className='mb-2 mb-sm-0 d-flex flex-wrap'>
                   <input className='me-1' type='radio' {...register(type, { required: "Please select an option" })} value='yes' onChange={() => handleRadioChange(type, true)} id={`${type}-yes`} />
@@ -140,7 +150,7 @@ const PersonalCareSection = ({ register, errors, showSections, handleToggle, set
                 </div>
                 {showSections[type] && (
                   <>
-                    {timeFields[type].map((_, index) => (
+                    {state.timeFields[type].map((_, index) => (
                       <div key={index} className='d-flex align-items-center mt-2 mt-sm-0 flex-wrap'>
                         <label className='ms-2 me-1 mb-0 text-nowrap' htmlFor={`${type}Time-${index}`}>
                           Time:

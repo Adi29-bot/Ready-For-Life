@@ -43,6 +43,7 @@ const DailyLogForm = () => {
     mood: false,
     care: false,
     bowel: false,
+    type: false,
     urination: false,
     padChange: false,
     liquid: false,

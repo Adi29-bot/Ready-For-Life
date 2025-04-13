@@ -17,7 +17,8 @@ export const useFormHandlers = (reset, handleSubmit, getValues, formId) => {
     const originalTitle = document.title;
     handleSubmit((data) => {
       localStorage.setItem(`${formId}FormData`, JSON.stringify(data));
-      const clientName = data.serviceUser ? data.serviceUser.label : data.client ? data.client.label : data.name ? data.name.label : data.clientBehaviour ? data.clientBehaviour.label : data.bodymapclient ? data.bodymapclient.label : data.youngPersonName ? data.youngPersonName.label : data.clientevidence ? data.clientevidence.label : "Client";
+      const clientName = data.serviceUser?.label || data.client?.label || data.name?.label || data.clientBehaviour?.label || data.bodymapclient?.label || data.youngPersonName?.label || data.clientevidence?.label || "Client";
+
       const currentDate = new Date().toLocaleDateString();
       document.title = `${clientName} - ${currentDate} - ${formId}`;
       window.print();

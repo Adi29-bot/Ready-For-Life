@@ -5,14 +5,14 @@ const OfficeUseSection = ({ register, errors, control, currentDate }) => {
   const { fields: staffFields, append: appendStaff, remove: removeStaff } = useFieldArray({ control, name: "officeUseEntries" });
 
   return (
-    <div className='mt-1 border border-primary p-3 office-use'>
+    <div className='mt-1 border border-primary p-3 office-use page-break'>
       <h6 className='mb-0 fw-bold text-primary'>
         <strong>For Office Use Only:</strong>
       </h6>
       <div className='row'>
         {staffFields.map((staffEntry, staffIndex) => (
           <div key={staffEntry.id} className='col-md-4 mb-3'>
-            <div className='border p-2 page-break'>
+            <div className='border p-2'>
               <h5>Staff Working with the Client</h5>
               <div className='form-group'>
                 <label htmlFor={`clientName-${staffIndex}`}>Staff Full Name</label>
