@@ -43,7 +43,6 @@ const DailyLogForm = () => {
     mood: false,
     care: false,
     bowel: false,
-    type: false,
     urination: false,
     padChange: false,
     liquid: false,
@@ -126,7 +125,7 @@ const DailyLogForm = () => {
       <ServiceUser register={register} errors={errors} control={control} renderSelect={renderSelect} />
       <ParentsSection watch={watch} showSections={showSections} handleToggle={handleToggle} register={register} errors={errors} renderCheckboxes={renderCheckboxes} setValue={setValue} />
       <MoodSection register={register} errors={errors} />
-      <PersonalCareSection register={register} errors={errors} showSections={showSections} handleToggle={handleToggle} setError={setError} clearErrors={clearErrors} />
+      <PersonalCareSection register={register} errors={errors} showSections={showSections} handleToggle={handleToggle} />
       <PadChangeSection showSections={showSections} handleToggle={handleToggle} register={register} errors={errors} control={control} />
       <BehaviourSection watch={watch} register={register} errors={errors} renderCheckboxes={renderCheckboxes} setValue={setValue} />
       <NutritionSection watch={watch} showSections={showSections} handleToggle={handleToggle} renderSelect={renderSelect} register={register} errors={errors} control={control} setValue={setValue} />

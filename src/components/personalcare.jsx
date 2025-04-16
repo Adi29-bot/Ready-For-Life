@@ -10,7 +10,7 @@ const CARE_TYPES = [
   { name: "Hair Cut", icon: hairCutIcon },
 ];
 
-const PersonalCareSection = ({ register, errors, showSections, handleToggle, setError, clearErrors }) => {
+const PersonalCareSection = ({ register, errors, showSections, handleToggle }) => {
   const [state, setState] = useState(() => {
     const savedState = JSON.parse(localStorage.getItem("personalCareState")) || {
       timeFields: { bowel: [], urination: [], care: [] },
@@ -59,19 +59,10 @@ const PersonalCareSection = ({ register, errors, showSections, handleToggle, set
     }
   };
 
-  useEffect(() => {
-    const isAnyChecked = Object.values(state.checkedCareTypes).some(Boolean);
-    if (!isAnyChecked) {
-      setError("checkbox", { type: "manual", message: "At least one checkbox must be selected" });
-    } else {
-      clearErrors("checkbox");
-    }
-  }, [state.checkedCareTypes, setError, clearErrors]);
-
   const renderCheckbox = (careType, index) => (
     <div className='col' key={index}>
       <div className='form-check'>
-        <input type='checkbox' className='form-check-input' id={careType.name} {...register(`careTypes.${careType.name}`, { required: true })} checked={state.checkedCareTypes[careType.name]} onChange={() => handleCheckboxChange(careType.name)} />
+        <input type='checkbox' className='form-check-input' id={careType.name} checked={state.checkedCareTypes[careType.name]} onChange={() => handleCheckboxChange(careType.name)} />
         <label className='form-check-label' htmlFor={careType.name}>
           {careType.name}
           <img src={careType.icon} alt={careType.name} style={{ width: "20px", marginRight: "5px" }} />
@@ -124,12 +115,21 @@ const PersonalCareSection = ({ register, errors, showSections, handleToggle, set
           </h6>
           <div className='row page-break'>
             {CARE_TYPES.map(renderCheckbox)}
-            {errors.checkbox && <small className='text-danger'>At least one checkbox must be selected</small>}
+            <input
+              type='hidden'
+              {...register("checkedCareTypes", {
+                validate: () => {
+                  const isAnyChecked = Object.values(state.checkedCareTypes).some(Boolean);
+                  return isAnyChecked || "At least one checkbox must be selected";
+                },
+              })}
+            />
+            {errors.checkedCareTypes && <small className='text-danger'>{errors.checkedCareTypes.message}</small>}
           </div>
         </div>
       )}
 
-      {/* Toilet Section */}
+      {/* Bowel Section */}
       <div className='row row-cols-1 row-cols-md-2 page-break'>
         {["bowel", "urination"].map((type, index) => (
           <div className='col' key={index}>
