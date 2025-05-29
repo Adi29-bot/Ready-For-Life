@@ -297,24 +297,25 @@ const IncidentReportForm = () => {
         {errors.physicalInterventionUsed && <small className='text-danger'>{errors.physicalInterventionUsed.message}</small>}
         {physicalInterventionUsed === "yes" && <input type='text' {...register("physicalother", { required: "Please specify the name(s)" })} className={`form-control border-primary ${errors.physicalother ? "is-invalid" : ""}`} placeholder='Specify the person(s) who administered the intervention' />}
         {errors.physicalother && <small className='invalid-feedback'>{errors.physicalother.message}</small>}
-
-        <div className='mt-1 d-flex align-items-center'>
-          <label className='mb-0 fw-bold text-primary me-2' htmlFor='staffEscorted'>
-            <strong>Total Number of Staff Escorts</strong>
-          </label>
-          <input
-            type='number'
-            id='staffEscorted'
-            {...register("staffEscorted", {
-              required: "Please enter the number of staff escorts",
-              min: { value: 1, message: "Number must be at least 1" },
-            })}
-            className={`form-control border-primary ${errors.staffEscorted ? "is-invalid" : ""}`}
-            min='1'
-            style={{ width: "80px" }}
-          />
-          {errors.staffEscorted && <small className='text-danger ms-2'>{errors.staffEscorted.message}</small>}
-        </div>
+        {physicalInterventionUsed === "yes" && (
+          <div className='mt-1 d-flex align-items-center'>
+            <label className='mb-0 fw-bold text-primary me-2' htmlFor='staffEscorted'>
+              <strong>Total Number of Staff Escorts</strong>
+            </label>
+            <input
+              type='number'
+              id='staffEscorted'
+              {...register("staffEscorted", {
+                required: "Please enter the number of staff escorts",
+                min: { value: 1, message: "Number must be at least 1" },
+              })}
+              className={`form-control border-primary ${errors.staffEscorted ? "is-invalid" : ""}`}
+              min='1'
+              style={{ width: "80px" }}
+            />
+            {errors.staffEscorted && <small className='text-danger ms-2'>{errors.staffEscorted.message}</small>}
+          </div>
+        )}
       </div>
 
       <div className='mb-3'>
